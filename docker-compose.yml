@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  web:
+    image: odoo:17.0
+    depends_on:
+      - mydb
+    ports:
+      - "8236:8236"
+    environment:
+      DB_HOST: mydb
+      DB_USER: younes
+      DB_PASSWORD: Bst.987654321*
+    command: >
+      bash -c "
+        echo 'Waiting for PostgreSQL to be ready...';
+        COUNT=0;
+        while ! pg_isready -h mydb -p 5432 -U younes; do
+          sleep 2;
+          COUNT=$((COUNT+1));
+          if [ $COUNT -ge 30 ]; then
+            echo 'Timeout waiting for PostgreSQL. Exiting...';
+            exit 1;
+          fi;
+        done;
+        echo 'PostgreSQL is ready. Starting Odoo...';
+        odoo
+      "
+    volumes:
+      - ./odoo.conf:/etc/odoo/odoo.conf
+      - ./addons:/mnt/extra-addons
+      - ./filestore:/var/lib/odoo/.local/share/Odoo/filestore
+      - ./filestore/.local/share/Odoo/sessions:/var/lib/odoo/.local/share/Odoo/sessions
+
+  mydb:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: odoo_17
+      POSTGRES_USER: younes
+      POSTGRES_PASSWORD: Bst.987654321*
+    volumes:
+      - mydb_data:/var/lib/postgresql/data
+
+volumes:
+  mydb_data:
