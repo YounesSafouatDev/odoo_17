@@ -14,7 +14,7 @@ services:
       bash -c "
         echo 'Waiting for PostgreSQL to be ready...';
         COUNT=0;
-        while ! pg_isready -h dpg-ctui5hlds78s73foc27g-a -p 5432 -U odoo17_fpft_user; do
+        while ! pg_isready -h mydb -p 5432 -U younes; do
           sleep 2;
           COUNT=$((COUNT+1));
           if [ $COUNT -ge 30 ]; then
@@ -23,8 +23,9 @@ services:
           fi;
         done;
         echo 'PostgreSQL is ready. Starting Odoo...';
-        odoo
+        odoo -d odoo_17 -i base --db_host=mydb --db_user=younes --db_password=Bst.987654321* --without-demo=all
       "
+
     volumes:
       - ./odoo.conf:/etc/odoo/odoo.conf
       - ./addons:/mnt/extra-addons
