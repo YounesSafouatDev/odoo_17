@@ -7,14 +7,14 @@ services:
     ports:
       - "8236:8236"
     environment:
-      DB_HOST: mydb
-      DB_USER: younes
-      DB_PASSWORD: Bst.987654321*
+      DB_HOST: dpg-ctui5hlds78s73foc27g-a
+      DB_USER: odoo17_fpft_user
+      DB_PASSWORD: Grlvrz2SyJligOrJNPmivGV6hiwWDam9
     command: >
       bash -c "
         echo 'Waiting for PostgreSQL to be ready...';
         COUNT=0;
-        while ! pg_isready -h mydb -p 5432 -U younes; do
+        while ! pg_isready -h dpg-ctui5hlds78s73foc27g-a -p 5432 -U odoo17_fpft_user; do
           sleep 2;
           COUNT=$((COUNT+1));
           if [ $COUNT -ge 30 ]; then
@@ -34,9 +34,9 @@ services:
   mydb:
     image: postgres:15
     environment:
-      POSTGRES_DB: odoo_17
-      POSTGRES_USER: younes
-      POSTGRES_PASSWORD: Bst.987654321*
+      POSTGRES_DB: odoo17_fpft
+      POSTGRES_USER: odoo17_fpft_user
+      POSTGRES_PASSWORD: Grlvrz2SyJligOrJNPmivGV6hiwWDam9
     volumes:
       - mydb_data:/var/lib/postgresql/data
 
