@@ -1,15 +1,12 @@
 # Base image for Odoo
 FROM odoo:17.0
 
-# Switch to root user to install dependencies
+# Switch to root user to install dependencies and change file permissions
 USER root
 
 # Install necessary dependencies for make
 RUN apt-get update && \
     apt-get install -y make build-essential
-
-# Switch back to the Odoo user after installation
-USER odoo
 
 # Copy your Odoo configuration file
 COPY odoo.conf /etc/odoo/odoo.conf
@@ -31,8 +28,11 @@ COPY filestore/.local/share/Odoo/sessions /var/lib/odoo/.local/share/Odoo/sessio
 # Add a custom shell script to initialize the database and then start Odoo
 COPY init-db.sh /usr/local/bin/init-db.sh
 
-# Make the script executable
+# Make the script executable (run as root)
 RUN chmod +x /usr/local/bin/init-db.sh
+
+# Switch back to the odoo user
+USER odoo
 
 # Set the entrypoint to run the initialization script first, then start Odoo
 ENTRYPOINT ["/usr/local/bin/init-db.sh"]
