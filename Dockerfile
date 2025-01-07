@@ -28,5 +28,11 @@ RUN mkdir -p /var/lib/odoo/.local/share/Odoo/filestore && \
 COPY filestore /var/lib/odoo/.local/share/Odoo/filestore
 COPY filestore/.local/share/Odoo/sessions /var/lib/odoo/.local/share/Odoo/sessions
 
-# Run Odoo (add make init-db to initialize the database)
-CMD ["make", "init-db", ";", "python", "odoo-bin"]
+# Add a custom shell script to initialize the database and then start Odoo
+COPY init-db.sh /usr/local/bin/init-db.sh
+
+# Make the script executable
+RUN chmod +x /usr/local/bin/init-db.sh
+
+# Set the entrypoint to run the initialization script first, then start Odoo
+ENTRYPOINT ["/usr/local/bin/init-db.sh"]
