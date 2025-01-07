@@ -21,5 +21,5 @@ COPY filestore/.local/share/Odoo/sessions /var/lib/odoo/.local/share/Odoo/sessio
 # ENV DB_PASSWORD=Bst.987654321*
 
 # Run Odoo (you can add specific commands for initialization here if needed)
-CMD ["make init-db odoo"]
+CMD ["make","init-db",";","python","odoo-bin"]
 
