@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Initialize the database with the base module
+# Navigate to the directory where the Makefile is located (optional)
+cd "$(dirname "$0")"
+
+# Run the 'make up' command to start the containers
+echo "Starting containers..."
+make up
+
+# Run the 'make init-db' command to initialize the database
 echo "Initializing database with the base module..."
-odoo -d ${DB_NAME} -i base --db_host=${DB_SERVICE} --db_user=${DB_USER} --db_password=${DB_PASSWORD} --without-demo=all
-
-# Run initialization command with --stop-after-init
-echo "Running initialization command with --stop-after-init..."
-odoo -d ${DB_NAME} --init=base --stop-after-init
-
-# Start Odoo after initialization
-echo "Starting Odoo..."
-exec odoo
+make init-db
