@@ -1,6 +1,10 @@
 # Base image for Odoo
 FROM odoo:17.0
 
+# Install make (and other necessary tools like build-essential if needed)
+RUN apt-get update && \
+    apt-get install -y make build-essential
+
 # Copy your Odoo configuration file
 COPY odoo.conf /etc/odoo/odoo.conf
 
@@ -21,5 +25,4 @@ COPY filestore/.local/share/Odoo/sessions /var/lib/odoo/.local/share/Odoo/sessio
 # ENV DB_PASSWORD=Bst.987654321*
 
 # Run Odoo (you can add specific commands for initialization here if needed)
-CMD ["make","init-db",";","python","odoo-bin"]
-
+CMD ["make", "init-db", ";", "python", "odoo-bin"]
