@@ -8,22 +8,10 @@ USER root
 RUN apt-get update && \
     apt-get install -y make build-essential
 
-# Copy your Odoo configuration file
-COPY odoo.conf /etc/odoo/odoo.conf
-
-# Copy your custom addons to the appropriate directory
-COPY addons /mnt/extra-addons
-
-# Copy Makefile to the container
-COPY Makefile /mnt/extra-addons/Makefile
-
-# Create directories for filestore and sessions
-RUN mkdir -p /var/lib/odoo/.local/share/Odoo/filestore && \
-    mkdir -p /var/lib/odoo/.local/share/Odoo/sessions
-
-# Copy filestore data
-COPY filestore /var/lib/odoo/.local/share/Odoo/filestore
-COPY filestore/.local/share/Odoo/sessions /var/lib/odoo/.local/share/Odoo/sessions
+# Create necessary directories if they don't exist
+RUN mkdir -p /var/lib/odoo/.local/share/Odoo/sessions && \
+    chown -R odoo:odoo /var/lib/odoo/.local/share/Odoo && \
+    chmod -R 700 /var/lib/odoo/.local/share/Odoo
 
 # Add a custom shell script to initialize the database and then start Odoo
 COPY init-db.sh /usr/local/bin/init-db.sh
