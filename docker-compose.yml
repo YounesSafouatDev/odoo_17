@@ -7,7 +7,7 @@ services:
     ports:
       - "8236:8236"
     environment:
-      DB_HOST: mydb # Use the service name here (mydb)
+      DB_HOST: mydb
       DB_USER: odoo17_fpft_user
       DB_PASSWORD: Grlvrz2SyJligOrJNPmivGV6hiwWDam9
     command: >
