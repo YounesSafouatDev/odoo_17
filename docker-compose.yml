@@ -5,27 +5,13 @@ services:
     depends_on:
       - mydb
     ports:
-      - "8236:8236"
+      - "8236:8069" # Map 8236 on the host to 8069 in the container
     environment:
-      DB_HOST: dpg-ctui5hlds78s73foc27g-a
+      DB_HOST: mydb
       DB_USER: odoo17_fpft_user
       DB_PASSWORD: Grlvrz2SyJligOrJNPmivGV6hiwWDam9
-    command: >
-      bash -c "
-        echo 'Waiting for PostgreSQL to be ready...';
-        COUNT=0;
-        while ! pg_isready -h dpg-ctui5hlds78s73foc27g-a -p 5432 -U odoo17_fpft_user; do
-          sleep 2;
-          COUNT=$((COUNT+1));
-          if [ $COUNT -ge 30 ]; then
-            echo 'Timeout waiting for PostgreSQL. Exiting...';
-            exit 1;
-          fi;
-        done;
-        echo 'PostgreSQL is ready. Starting Odoo...';
-        odoo -d odoo_17 -i base --db_host=dpg-ctui5hlds78s73foc27g-a --db_user=odoo17_fpft_user --db_password=Grlvrz2SyJligOrJNPmivGV6hiwWDam9 --without-demo=all
-      "
-
+      DB_NAME: odoo17_fpft
+    command: /etc/odoo/inidb.sh
     volumes:
       - ./odoo.conf:/etc/odoo/odoo.conf
       - ./addons:/mnt/extra-addons
