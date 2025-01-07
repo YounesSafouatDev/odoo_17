@@ -7,14 +7,13 @@ services:
     ports:
       - "8236:8236"
     environment:
-      LANG: en_US.UTF-8
+      LANG: C.UTF-8
       LANGUAGE: en_US:en
-      LC_ALL: en_US.UTF-8
+      LC_ALL: C.UTF-8
       DB_HOST: mydb
       DB_USER: odoo17_fpft_user
       DB_PASSWORD: Grlvrz2SyJligOrJNPmivGV6hiwWDam9
       DB_NAME: odoo17_fpft
-      DB_SERVICE: mydb
     command: >
       bash -c "
         echo 'Waiting for PostgreSQL to be ready...';
@@ -46,6 +45,11 @@ services:
       POSTGRES_PASSWORD: Grlvrz2SyJligOrJNPmivGV6hiwWDam9
     volumes:
       - mydb_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo17_fpft_user -d odoo17_fpft"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mydb_data:
