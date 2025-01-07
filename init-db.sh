@@ -3,7 +3,7 @@
 # Wait for PostgreSQL to be ready
 echo "Waiting for PostgreSQL to be ready..."
 COUNT=0
-while ! pg_isready -h "${DB_SERVICE}" -p 5432 -U "${DB_USER}"; do
+while ! pg_isready -h "${DB_SERVICE}" -p 5435 -U "${DB_USER}"; do
   sleep 2
   COUNT=$((COUNT+1))
   if [ "$COUNT" -ge 30 ]; then

@@ -14,7 +14,7 @@ services:
       bash -c "
         echo 'Waiting for PostgreSQL to be ready...';
         COUNT=0;
-        while ! pg_isready -h mydb -p 5432 -U odoo17_fpft_user; do  # Adjust to use service name
+        while ! pg_isready -h mydb -p 5435 -U odoo17_fpft_user; do  # Adjust to use service name
           sleep 2;
           COUNT=$((COUNT+1));
           if [ $COUNT -ge 30 ]; then
